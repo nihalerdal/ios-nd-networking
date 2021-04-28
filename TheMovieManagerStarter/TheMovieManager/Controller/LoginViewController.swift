@@ -25,6 +25,7 @@ class LoginViewController: UIViewController {
     @IBAction func loginTapped(_ sender: UIButton) {
         performSegue(withIdentifier: "completeLogin", sender: nil)
         TMDBClient.getRequestToken(completion: handleRequestTokenResponse(success:error:))
+        
     }
     
     @IBAction func loginViaWebsiteTapped() {
@@ -32,6 +33,16 @@ class LoginViewController: UIViewController {
     }
     
     func handleRequestTokenResponse(success: Bool, error: Error?){
+        if success{
+            print(TMDBClient.Auth.requestToken)
+            DispatchQueue.main.async {
+                TMDBClient.login(username: self.emailTextField.text ?? "", password: self.passwordTextField.text ?? "", completion: self.handleLoginResponse(success:error:))
+            }
+         
+        }
+    }
+    
+    func handleLoginResponse(success: Bool, error: Error?){ // burdan sonra handleRequestTokenResponse icinde cagiriyorum. loginTapped icinde degil. Ayrica main thread de calismamasi icin async icinde yaziyorum.
         if success{
             print(TMDBClient.Auth.requestToken)
         }

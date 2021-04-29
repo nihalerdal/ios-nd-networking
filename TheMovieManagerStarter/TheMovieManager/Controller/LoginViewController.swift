@@ -43,8 +43,19 @@ class LoginViewController: UIViewController {
     }
     
     func handleLoginResponse(success: Bool, error: Error?){ // burdan sonra handleRequestTokenResponse icinde cagiriyorum. loginTapped icinde degil. Ayrica main thread de calismamasi icin async icinde yaziyorum.
+        
+        print(TMDBClient.Auth.requestToken)
         if success{
-            print(TMDBClient.Auth.requestToken)
+            TMDBClient.createSessionId( completion: handleSessionResponse(success:error:))
+            
+        }
+    }
+    
+    func handleSessionResponse(success: Bool, error: Error?){ //burdan sonra da handleLoginResponse icinde cagiriyorum. cunku login dogru calistiktan sonra sessionid yaratilmasini bekliyorum.
+        if success{
+            DispatchQueue.main.async {
+                self.performSegue(withIdentifier: "completeLogin", sender: nil)
+            }
         }
     }
     

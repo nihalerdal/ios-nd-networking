@@ -12,6 +12,7 @@ class TMDBClient {
     
     static let apiKey = "9a0172612787dcab182b25a36a1b5d9a"
     
+    
     struct Auth {
         static var accountId = 0
         static var requestToken = ""
@@ -30,7 +31,7 @@ class TMDBClient {
         var stringValue: String {
             switch self {
             case .getWatchlist: return Endpoints.base + "/account/\(Auth.accountId)/watchlist/movies" + Endpoints.apiKeyParam + "&session_id=\(Auth.sessionId)"
-            case .getRequestToken: return Endpoints.base + "authentication/token/new" + Endpoints.apiKeyParam
+            case .getRequestToken: return Endpoints.base + "/authentication/token/new" + Endpoints.apiKeyParam
             case .login: return Endpoints.base + "/authentication/token/validate_with_login" + Endpoints.apiKeyParam
             case .createSessionId: return Endpoints.base + "/authentication/session/new" + Endpoints.apiKeyParam
             }
@@ -83,7 +84,7 @@ class TMDBClient {
         
         var request = URLRequest(url: Endpoints.login.url)
         request.httpMethod = "POST"
-        request.addValue("applicationn/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let body = LoginRequest(username: username, password: password, requestToken: Auth.requestToken)
         let encoder = JSONEncoder()
